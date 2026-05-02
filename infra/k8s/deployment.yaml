@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: axleware }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: axleware } }
+  template:
+    metadata:
+      labels: { app: axleware }
+      # AXL-IAC-007: no `pod-security.kubernetes.io/enforce` label,
+      # no securityContext, no resource limits.
+    spec:
+      containers:
+        - name: app
+          image: axleware/api:latest

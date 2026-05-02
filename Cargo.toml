@@ -1,0 +1,19 @@
+[package]
+name = "axleware-telematics"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum     = "0.6"
+tokio    = { version = "1", features = ["full"] }
+sqlx     = { version = "0.7", features = ["runtime-tokio-rustls", "postgres"] }
+reqwest  = "0.11"
+rumqttc  = "0.23"
+rustls   = "0.21"
+serde    = { version = "1", features = ["derive"] }
+rand     = "0.8"
+
+# Vulnerable on purpose.
+openssl  = "=0.10.45"
+time     = "=0.2.23"
+hyper    = "=0.14.10"

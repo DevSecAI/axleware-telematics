@@ -1,0 +1,25 @@
+# AXL-CI-002: no permissions block.
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # AXL-CI-001: AWS IoT cert + private key inlined.
+      IOT_CERT_PEM: |
+        -----BEGIN CERTIFICATE-----
+        MIIDazCCAlOgAwIBAgIUExampleCertNeverRotateAA
+        -----END CERTIFICATE-----
+      IOT_KEY_PEM: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEowIBAAKCAQEAxExamplePrivateKeyDoNotUse
+        -----END RSA PRIVATE KEY-----
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      # AXL-CI-003: cargo install from a git URL with no commit pin.
+      - run: cargo install --git https://internal.axleware.example/tools/release-helper
+      - run: cargo build --release
+      - run: cargo test

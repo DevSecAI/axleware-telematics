@@ -1,0 +1,33 @@
+benchmark_id: axleware-telematics
+corpus_version: "0.1.0"
+industry: automotive
+sub_industry: connected-vehicle
+frameworks: [ISO-SAE-21434, UN-R155]
+
+findings:
+  sast:
+    - { id: AXL-SAST-001, cwe: CWE-89,  severity: high,     file: src/handlers/vehicles.rs }
+    - { id: AXL-SAST-002, cwe: CWE-78,  severity: high,     file: src/services/ota.rs }
+    - { id: AXL-SAST-003, cwe: CWE-798, severity: critical, file: src/config.rs }
+    - { id: AXL-SAST-004, cwe: CWE-242, severity: high,     file: src/parsers/can.rs }
+    - { id: AXL-SAST-005, cwe: CWE-326, severity: high,     file: src/transport/tls.rs }
+    - { id: AXL-SAST-006, cwe: CWE-330, severity: medium,   file: src/services/tokens.rs }
+    - { id: AXL-SAST-007, cwe: CWE-918, severity: high,     file: src/services/uplink.rs }
+    - { id: AXL-SAST-008, cwe: CWE-22,  severity: high,     file: src/handlers/firmware.rs }
+    - { id: AXL-SAST-009, cwe: CWE-369, severity: medium,   file: src/parsers/can.rs }
+  iac:
+    - { id: AXL-IAC-001, class: iot-policy-wildcard, file: infra/terraform/iot.tf }
+    - { id: AXL-IAC-002, class: iot-anonymous,       file: infra/terraform/iot.tf }
+    - { id: AXL-IAC-003, class: s3-public,           file: infra/terraform/firmware.tf }
+    - { id: AXL-IAC-004, class: s3-no-encryption,    file: infra/terraform/firmware.tf }
+    - { id: AXL-IAC-005, class: sg-open-mqtt,        file: infra/terraform/main.tf }
+    - { id: AXL-IAC-006, class: container-root,      file: Dockerfile }
+    - { id: AXL-IAC-007, class: k8s-no-pod-security, file: infra/k8s/deployment.yaml }
+  sca:
+    - { id: AXL-SCA-001, package: openssl, version: "0.10.45", advisory: "RUSTSEC-2023-0044" }
+    - { id: AXL-SCA-002, package: time,    version: "0.2.23",  advisory: "RUSTSEC-2020-0071" }
+    - { id: AXL-SCA-003, package: hyper,   version: "0.14.10", advisory: "RUSTSEC-2021-0079" }
+  pipeline:
+    - { id: AXL-CI-001, class: hardcoded-cert-key,  file: .github/workflows/ci.yml }
+    - { id: AXL-CI-002, class: missing-permissions, file: .github/workflows/ci.yml }
+    - { id: AXL-CI-003, class: cargo-unpinned-git,  file: .github/workflows/ci.yml }
