@@ -2,7 +2,7 @@
 
 > ⚠️ **ARKO Demo Application — contains intentional vulnerabilities. Do not deploy.**
 
-Telematics ingestion and OTA-update orchestration for a (fictional) vehicle OEM. Part of the [ARKO Coverage Demos](https://github.com/DevSecAI/arko-benchmarks) suite.
+Telematics ingestion and OTA-update orchestration for a (fictional) vehicle OEM. Part of the [ARKO Coverage Demos](https://github.com/DevSecAI/arko-demos) suite.
 
 Stack: Rust 1.78 · Axum · TimescaleDB · MQTT · AWS · Kubernetes.
 
