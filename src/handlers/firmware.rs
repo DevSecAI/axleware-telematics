@@ -16,7 +16,19 @@ pub async fn read(name: &str) -> std::io::Result<Vec<u8>> {
     
     let mut p = PathBuf::from(ROOT);
     p.push(filename);
-    let mut f = File::open(p).await?;
+    
+    // Canonicalize and verify the resolved path starts with the intended base directory
+    let canonical = p.canonicalize().await?;
+    let base_canonical = PathBuf::from(ROOT).canonicalize().await?;
+    
+    if !canonical.starts_with(&base_canonical) {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::PermissionDenied,
+            "Path traversal attempt detected: resolved path outside base directory"
+        ));
+    }
+    
+    let mut f = File::open(canonical).await?;
     let mut buf = Vec::new();
     f.read_to_end(&mut buf).await?;
     Ok(buf)
