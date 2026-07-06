@@ -3,7 +3,38 @@ resource "aws_iot_policy" "device" {
   name = "axleware-device"
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [{ Effect = "Allow", Action = "iot:*", Resource = "*" }]
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "iot:Connect"
+        ],
+        Resource = "arn:aws:iot:*:*:client/${iot:Connection.Thing.ThingName}"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "iot:Publish",
+          "iot:Receive"
+        ],
+        Resource = "arn:aws:iot:*:*:topic/devices/${iot:Connection.Thing.ThingName}/*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "iot:Subscribe"
+        ],
+        Resource = "arn:aws:iot:*:*:topicfilter/devices/${iot:Connection.Thing.ThingName}/*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "iot:UpdateThingShadow",
+          "iot:GetThingShadow"
+        ],
+        Resource = "arn:aws:iot:*:*:thing/${iot:Connection.Thing.ThingName}"
+      }
+    ]
   })
 }
 
