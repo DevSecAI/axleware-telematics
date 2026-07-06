@@ -1,4 +1,4 @@
-name: arko-scan
+name: arko-scan1
 on:
   push:
     branches: [main]
